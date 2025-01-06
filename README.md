@@ -21,6 +21,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Using docker
+
+Or you can use docker
+```
+docker build . -t spaceflix-backend
+docker run -p 3000:3000 spaceflix-backend   
+```
+
 ## Run tests
 
 ```bash
