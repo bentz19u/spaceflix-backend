@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import databaseConfig from './config/default.config'
+import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm'
+import { DefaultTypeOrmService } from './config/default-type-orm.service'
+import { UsersModule } from './users/users.module'
 
 @Module({
   imports: [
@@ -11,6 +14,12 @@ import databaseConfig from './config/default.config'
       load: [databaseConfig],
       isGlobal: true,
     }),
+    TypeOrmModule.forRootAsync(<TypeOrmModuleAsyncOptions>{
+      name: 'default',
+      useClass: DefaultTypeOrmService,
+      inject: [ConfigService],
+    }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
