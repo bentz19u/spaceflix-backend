@@ -23,10 +23,15 @@ $ npm run start:prod
 
 ## Using docker
 
-Or you can use docker
+Or you can use docker while handling the database yourself
 ```
 docker build . -t spaceflix-backend
 docker run -p 3000:3000 spaceflix-backend   
+```
+
+You can use docker compose if you don't want to handle the database yourself
+```
+docker-compose up --build 
 ```
 
 ## Run tests
