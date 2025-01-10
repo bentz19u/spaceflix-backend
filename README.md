@@ -49,4 +49,4 @@ $ npm run test:cov
 
 ## Access swagger localhost
 
-http://localhost:3000/
+http://localhost:3000/api/#
