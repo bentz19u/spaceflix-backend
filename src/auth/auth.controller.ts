@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, NotFoundException, Post, Req } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Public } from '../common/decorators/public.decorator'
 import {
@@ -7,6 +7,8 @@ import {
   ApiForbiddenResponse,
   ApiHeader,
   ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { LoginResponseDto } from './dto/login-response.dto'
@@ -15,8 +17,11 @@ import { UsersRepository } from '@entities/repositories/users.repository'
 import { ErrorCodes } from '../common/constants/error-code.constant'
 import { isEmpty } from 'lodash'
 import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
+import { SpaceflixController } from '@auth/decorator/spaceflix.decorator'
+import RequestWithUser from '../common/interface/request-with-user.interface'
 
-@Controller('auth')
+@ApiTags('auth')
+@Controller('')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -57,5 +62,13 @@ export class AuthController {
 
     await this.loginAttemptsService.checkLoginAttempts(user.id, ip)
     return await this.authService.login(user, ip, loginRequestDto)
+  }
+
+  @Get('logout')
+  @SpaceflixController({ pathPrefix: '', tag: 'auth' })
+  @ApiOkResponse({ description: 'Returned if the refresh token has been removed.' })
+  @ApiNotFoundResponse({ description: 'Returned if the token does not exist.' })
+  async logout(@Req() req: RequestWithUser): Promise<void> {
+    await this.authService.logout(req.user['sub'])
   }
 }

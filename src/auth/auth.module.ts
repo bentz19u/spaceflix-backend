@@ -13,6 +13,8 @@ import { UsersRepository } from '@entities/repositories/users.repository'
 import { UsersEntity } from '@entities/users.entity'
 import { UserTokensRepository } from '@entities/repositories/user-tokens.repository'
 import { UserTokensEntity } from '@entities/user-tokens.entity'
+import { AccessTokenStrategy } from '@auth/strategies/access-token.strategy'
+import { RefreshTokenStrategy } from '@auth/strategies/refresh-token.strategy'
 
 @Module({
   imports: [
@@ -22,6 +24,14 @@ import { UserTokensEntity } from '@entities/user-tokens.entity'
     UserCooldownsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, SystemStatesRepository, UsersRepository, UserIpsRepository, UserTokensRepository],
+  providers: [
+    AccessTokenStrategy,
+    AuthService,
+    RefreshTokenStrategy,
+    SystemStatesRepository,
+    UsersRepository,
+    UserIpsRepository,
+    UserTokensRepository,
+  ],
 })
 export class AuthModule {}

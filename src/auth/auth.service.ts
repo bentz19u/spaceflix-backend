@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { LoginResponseDto } from './dto/login-response.dto'
 import { LoginRequestDto } from './dto/login-request.dto'
 import { UsersEntity } from '@entities/users.entity'
@@ -44,6 +44,15 @@ export class AuthService {
     return {
       ...tokens,
     }
+  }
+
+  async logout(userId: number): Promise<void> {
+    const userToken = await this.userTokensRepository.findOneBy({ userId })
+
+    if (!userToken) throw new NotFoundException()
+
+    userToken.token = null
+    await this.userTokensRepository.save(userToken)
   }
 
   private async checkLogin(user: UsersEntity, loginRequestDto: LoginRequestDto): Promise<CheckLoginResponseDto> {
