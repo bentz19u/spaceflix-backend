@@ -14,12 +14,13 @@ import { LoginRequestDto } from './dto/login-request.dto'
 import { UsersRepository } from '@entities/repositories/users.repository'
 import { ErrorCodes } from '../common/constants/error-code.constant'
 import { isEmpty } from 'lodash'
-import * as argon2 from 'argon2'
+import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
+    private readonly loginAttemptsService: LoginAttemptsService,
     private readonly usersRepository: UsersRepository,
   ) {}
 
@@ -54,8 +55,7 @@ export class AuthController {
       ip = ip.replace('::ffff:', '')
     }
 
-    // user tried to log in with an email
-    // await this.loginAttemptsService.checkLoginAttemptsByEmail(user.id, ip)
+    await this.loginAttemptsService.checkLoginAttempts(user.id, ip)
     return await this.authService.login(user, ip, loginRequestDto)
   }
 }

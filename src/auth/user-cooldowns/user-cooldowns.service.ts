@@ -19,21 +19,20 @@ export class UserCooldownsService {
 
   constructor(private readonly userCooldownsRepository: UserCooldownsRepository) {}
 
-  // async mustWait(email: string): Promise<boolean> {
-  //   const result = await this.userCooldownsRepository.findOneAllowedAfterNowByEmail(email)
-  //   return !!result
-  // }
-  //
-  // async incrementUserCooldownByEmail(email: string, ip: string) {
-  //   let cooldownCount7d = await this.userCooldownsRepository.findCooldownCount(email, 604800)
-  //   cooldownCount7d = Math.min(9, cooldownCount7d)
-  //   const cooldown = this.cooldowns[cooldownCount7d]
-  //
-  //   const createUserCooldownRequestDto: CreateUserCooldownRequestDto = {
-  //     email,
-  //     cooldownSeconds: cooldown,
-  //     ipAddress: ip,
-  //   }
-  //   await this.userCooldownsRepository.createUserCooldownByEmail(createUserCooldownRequestDto)
-  // }
+  async mustWait(userId: number): Promise<boolean> {
+    const result = await this.userCooldownsRepository.findOneAllowedAfterNow(userId)
+    return !!result
+  }
+
+  async incrementUserCooldown(userId: number) {
+    let cooldownCount7d = await this.userCooldownsRepository.findCooldownCount(userId, 604800)
+    cooldownCount7d = Math.min(9, cooldownCount7d)
+    const cooldown = this.cooldowns[cooldownCount7d]
+
+    const createUserCooldownRequestDto: CreateUserCooldownRequestDto = {
+      userId,
+      cooldownSeconds: cooldown,
+    }
+    await this.userCooldownsRepository.createUserCooldownByEmail(createUserCooldownRequestDto)
+  }
 }
