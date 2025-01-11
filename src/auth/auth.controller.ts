@@ -1,8 +1,9 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { Public } from '../common/decorators/public.decorator'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiHeader,
@@ -19,6 +20,8 @@ import { isEmpty } from 'lodash'
 import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
 import { SpaceflixController } from '@auth/decorator/spaceflix.decorator'
 import RequestWithUser from '../common/interface/request-with-user.interface'
+import { BackendJwtRefreshGuard } from '@auth/guards/backend-jwt-refresh.guard'
+import { RefreshResponseDto } from '@auth/dto/refresh-response.dto'
 
 @ApiTags('auth')
 @Controller('')
@@ -70,5 +73,19 @@ export class AuthController {
   @ApiNotFoundResponse({ description: 'Returned if the token does not exist.' })
   async logout(@Req() req: RequestWithUser): Promise<void> {
     await this.authService.logout(req.user['sub'])
+  }
+
+  @Post('refresh')
+  @UseGuards(BackendJwtRefreshGuard)
+  @ApiBearerAuth('backend-jwt-refresh')
+  @ApiCreatedResponse({ type: RefreshResponseDto })
+  @ApiUnauthorizedResponse({ description: 'Returned if the calling user is not authenticated.' })
+  @ApiNotFoundResponse({ description: 'Returned if the token does not exist.' })
+  @ApiForbiddenResponse({ description: 'Returned if the refresh token provided is expired.' })
+  async refresh(@Req() req: RequestWithUser): Promise<RefreshResponseDto> {
+    const userId = req.user['sub']
+    const refreshToken = req.user['refreshToken']
+    const rememberMe = req.user['rememberMe']
+    return this.authService.refreshTokens(userId, refreshToken, rememberMe)
   }
 }

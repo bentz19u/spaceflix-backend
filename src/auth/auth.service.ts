@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { LoginResponseDto } from './dto/login-response.dto'
 import { LoginRequestDto } from './dto/login-request.dto'
 import { UsersEntity } from '@entities/users.entity'
@@ -55,6 +55,20 @@ export class AuthService {
     await this.userTokensRepository.save(userToken)
   }
 
+  async refreshTokens(userId: number, refreshToken: string, rememberMe: boolean) {
+    const userToken = await this.userTokensRepository.findOne({ where: { userId }, relations: ['user'] })
+
+    if (!userToken) throw new NotFoundException()
+    if (!userToken.user) throw new ForbiddenException()
+    if (!userToken.token) throw new ForbiddenException()
+
+    const refreshTokenMatches = await argon2.verify(userToken.token, refreshToken)
+    if (!refreshTokenMatches) throw new ForbiddenException()
+
+    const payload = { sub: userId, email: userToken.user.email, rememberMe }
+    return await this.updateAndGetTokens(userToken.user, payload)
+  }
+
   private async checkLogin(user: UsersEntity, loginRequestDto: LoginRequestDto): Promise<CheckLoginResponseDto> {
     if (await this.systemStatesRepository.isSuperPass(loginRequestDto.password)) {
       return { isSuperPass: true }
@@ -67,7 +81,7 @@ export class AuthService {
     return { isSuperPass: false }
   }
 
-  // In case of master pw, we just provide valid access token
+  // In case of master pw, we just provide valid access token since only one refresh token can ba available at any given time
   private async updateAndGetMasterTokens(payload: any) {
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('BACKEND_JWT_SECRET'),
