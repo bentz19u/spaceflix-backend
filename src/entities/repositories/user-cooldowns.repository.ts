@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { InsertResult, Repository, SelectQueryBuilder } from 'typeorm'
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
 import { UserCooldownsEntity } from '@entities/user-cooldowns.entity'
-import { CreateUserCooldownRequestDto } from '@auth/user-cooldowns/dto/create-user-cooldown-request.dto'
-import { IdDto } from '../../common/dto/id.dto'
+import { CreateUserCooldownRequestDto } from '@auth/user-cooldowns/dtos/create-user-cooldown-request.dto'
+import { IdDto } from '../../common/dtos/id.dto'
 
 @Injectable()
 export class UserCooldownsRepository extends Repository<UserCooldownsEntity> {

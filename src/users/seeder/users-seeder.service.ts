@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { UsersRepository } from '@entities/repositories/users.repository'
-import { CreateUserSeederRequestDto } from '../dto/create-user-seeder-request.dto'
+import { CreateUserSeederRequestDto } from '../dtos/create-user-seeder-request.dto'
 import { UsersEntity } from '@entities/users.entity'
 
 @Injectable()

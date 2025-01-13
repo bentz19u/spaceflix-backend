@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { CreateUserCooldownRequestDto } from './dto/create-user-cooldown-request.dto'
+import { CreateUserCooldownRequestDto } from '@auth/user-cooldowns/dtos/create-user-cooldown-request.dto'
 import { UserCooldownsRepository } from '@entities/repositories/user-cooldowns.repository'
 
 @Injectable()

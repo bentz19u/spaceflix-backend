@@ -3,7 +3,7 @@ import { UserCooldownsService } from '@auth/user-cooldowns/user-cooldowns.servic
 import { UserCooldownsRepository } from '@entities/repositories/user-cooldowns.repository'
 import { LoginAttemptsRepository } from '@entities/repositories/login-attempts.repository'
 import { ErrorCodes } from '../../common/constants/error-code.constant'
-import { CreateLoginAttemptRequestDto } from '@auth/login-attempts/dto/create-login-attempt-request.dto'
+import { CreateLoginAttemptRequestDto } from '@auth/login-attempts/dtos/create-login-attempt-request.dto'
 import { LoginAttemptsEntity } from '@entities/login-attempts.entity'
 
 @Injectable()

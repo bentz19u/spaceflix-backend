@@ -12,16 +12,16 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
-import { LoginResponseDto } from './dto/login-response.dto'
-import { LoginRequestDto } from './dto/login-request.dto'
+import { LoginResponseDto } from '@auth/dtos/login-response.dto'
+import { LoginRequestDto } from '@auth/dtos/login-request.dto'
 import { UsersRepository } from '@entities/repositories/users.repository'
 import { ErrorCodes } from '../common/constants/error-code.constant'
 import { isEmpty } from 'lodash'
 import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
-import { SpaceflixController } from '@auth/decorator/spaceflix.decorator'
-import RequestWithUser from '../common/interface/request-with-user.interface'
+import { SpaceflixController } from '@auth/decorators/spaceflix.decorator'
+import RequestWithUser from '../common/interfaces/request-with-user.interface'
 import { BackendJwtRefreshGuard } from '@auth/guards/backend-jwt-refresh.guard'
-import { RefreshResponseDto } from '@auth/dto/refresh-response.dto'
+import { RefreshResponseDto } from '@auth/dtos/refresh-response.dto'
 
 @ApiTags('auth')
 @Controller('')

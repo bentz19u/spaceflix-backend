@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { SystemStatesRepository } from '@entities/repositories/system-states.repository'
-import { CreateSystemStateRequestDto } from '../dto/create-system-state-request.dto'
+import { CreateSystemStateRequestDto } from '../dtos/create-system-state-request.dto'
 import { SystemStatesEntity } from '@entities/system-states.entity'
 
 @Injectable()
