@@ -5,5 +5,10 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "moduleNameMapper": {
+    "^@entities/(.*)$": "<rootDir>/../src/entities/$1",
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/common/setup-e2e.ts"]
 }
