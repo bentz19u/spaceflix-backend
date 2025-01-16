@@ -6,6 +6,7 @@ import { TestingModule } from '@nestjs/testing'
 import { UsersSeederService } from '../../src/users/seeder/users-seeder.service'
 import { UsersDummy } from '../dummies/users.dummy'
 import { INestApplication } from '@nestjs/common'
+import { SeederRepository } from '@entities/repositories/seeder.repository'
 
 export class E2eHelper {
   app: INestApplication
@@ -14,6 +15,13 @@ export class E2eHelper {
   constructor() {
     this.app = global['__APP__']
     this.moduleFixture = global['__MODULE_FIXTURE__']
+  }
+
+  async init() {
+    // we will clear all table between each e2e module test
+    // to avoid having insert or update from some tests messing up with the others
+    const seederRepository = this.moduleFixture.get<SeederRepository>(SeederRepository)
+    await seederRepository.clear()
   }
 
   getApp(): INestApplication {

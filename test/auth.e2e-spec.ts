@@ -12,6 +12,7 @@ describe('AppController (e2e)', () => {
   beforeAll(async () => {
     e2eHelper = new E2eHelper()
     app = e2eHelper.getApp()
+    await e2eHelper.init()
 
     const usersDummy = e2eHelper.getUsersDummy()
 

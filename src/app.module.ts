@@ -4,8 +4,9 @@ import databaseConfig from './configs/default.config'
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm'
 import { DefaultTypeOrmService } from './configs/default-type-orm.service'
 import { UsersModule } from './users/users.module'
-import { AuthModule } from './auth/auth.module'
+import { AuthModule } from '@auth/auth.module'
 import { SystemStatesModule } from './system-states/system-states.module'
+import { SeederRepository } from '@entities/repositories/seeder.repository'
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import { SystemStatesModule } from './system-states/system-states.module'
     SystemStatesModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [SeederRepository],
 })
 export class AppModule {}
