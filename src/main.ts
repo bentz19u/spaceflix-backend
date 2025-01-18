@@ -4,9 +4,13 @@ import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { UsersSeederService } from './users/seeder/users-seeder.service'
 import { SystemStatesSeederService } from './system-states/seeder/system-states-seeder.service'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  // it's used to enable auto validation of the incoming data
+  app.useGlobalPipes(new ValidationPipe())
 
   const config = new DocumentBuilder()
     .addBearerAuth(

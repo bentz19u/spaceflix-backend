@@ -13,8 +13,13 @@ export class UsersDummy {
   async insertUsers(): Promise<UsersEntity> {
     const data: CreateUserSeederRequestDto[] = [
       {
-        id: 1,
+        id: 1, // normal user
         email: 'daniel.bentz@test.com',
+        password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
+      },
+      {
+        id: 2, // to test too many logins
+        email: 'daniel.bentz+1@test.com',
         password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
       },
     ]
