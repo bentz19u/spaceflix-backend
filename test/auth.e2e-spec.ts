@@ -10,6 +10,7 @@ describe('AppController (e2e)', () => {
 
   let accessToken
   let refreshToken
+  let newRefreshToken
 
   const USER_EMAIL = 'daniel.bentz@test.com'
   const TOO_MANY_TRY_USER_EMAIL = 'daniel.bentz+1@test.com'
@@ -125,6 +126,42 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.FORBIDDEN)
         .expect((res) => {
           expect(res.body.code).toBe(ErrorCodes.LOGIN.HAS_TOO_MANY_ATTEMPT.code)
+        })
+    })
+  })
+
+  describe('/refresh', () => {
+    it(`401 - Refresh token not found`, async () => {
+      await request(app.getHttpServer()).post('/refresh').expect(HttpStatus.UNAUTHORIZED)
+    })
+
+    it(`401 - Wrong refresh token`, async () => {
+      await request(app.getHttpServer())
+        .post(`/refresh`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(HttpStatus.UNAUTHORIZED)
+    })
+
+    it(`201 - Refresh token working and tokens returned`, async () => {
+      await request(app.getHttpServer())
+        .post(`/refresh`)
+        .set('Authorization', `Bearer ${refreshToken}`)
+        .expect(HttpStatus.CREATED)
+        .expect((res) => {
+          expect(res.body.accessToken).toBeDefined()
+          expect(res.body.refreshToken).toBeDefined()
+          newRefreshToken = res.body.refreshToken
+        })
+    })
+
+    it(`201 - Testing the new refresh token`, async () => {
+      await request(app.getHttpServer())
+        .post(`/refresh`)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${newRefreshToken}`)
+        .expect(HttpStatus.CREATED)
+        .expect((res) => {
+          newRefreshToken = res.body.refreshToken
         })
     })
   })
