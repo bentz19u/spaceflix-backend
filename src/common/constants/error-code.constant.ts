@@ -46,6 +46,22 @@ export const ErrorCodes = {
   },
 
   /**
+   * Server error responses 500 - 599
+   */
+  UNEXPECTED_ERROR: {
+    code: 'server-0001',
+    description: 'internal server error, please escalate this to land-fx development team',
+  },
+
+  /**
+   * TypeORM error codes
+   */
+  TYPEORM: {
+    code: 'db-0001',
+    description: 'Something went wrong with database',
+  },
+
+  /**
    * Login error codes
    */
   LOGIN: {

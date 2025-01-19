@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
-import { i18nValidationMessage } from 'nestjs-i18n'
 
 export class LoginRequestDto {
   @ApiProperty({ example: 'daniel.bentz@test.com' })
@@ -8,11 +7,11 @@ export class LoginRequestDto {
   email: string
 
   @ApiProperty({ example: 'password' })
-  @IsNotEmpty({ message: i18nValidationMessage('validation.REQUIRED') })
+  @IsNotEmpty()
   password: string
 
   @ApiProperty({ example: false })
-  @IsNotEmpty({ message: i18nValidationMessage('validation.REQUIRED') })
+  @IsNotEmpty()
   @IsOptional()
   rememberMe?: boolean = false
 }

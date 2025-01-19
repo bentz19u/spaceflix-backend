@@ -1,5 +1,5 @@
 import { HttpStatus, INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
+import request from 'supertest'
 import { E2eHelper } from './common/e2e-helper'
 import { LoginRequestDto } from '@auth/dtos/login-request.dto'
 import { ErrorCodes } from '../src/common/constants/error-code.constant'
@@ -125,7 +125,7 @@ describe('AppController (e2e)', () => {
         .send(requestDto)
         .expect(HttpStatus.FORBIDDEN)
         .expect((res) => {
-          expect(res.body.code).toBe(ErrorCodes.LOGIN.HAS_TOO_MANY_ATTEMPT.code)
+          expect(res.body.error.code).toBe(ErrorCodes.LOGIN.HAS_TOO_MANY_ATTEMPT.code)
         })
     })
   })
