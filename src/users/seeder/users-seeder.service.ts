@@ -27,7 +27,7 @@ export class UsersSeederService {
       {
         id: 1,
         email: 'daniel.bentz@test.com',
-        password: '$argon2id$v=19$m=65536,t=3,p=4$zuNfNlxSoJCoIMOx/GL3EQ$SPoNdDDZxhNNuWtcDOBkOoWboWMO+C4MqRnSmhptUyk',
+        password: '$argon2id$v=19$m=65536,t=3,p=4$s3wPgRqPlaHr9CWh4EgPxw$717YPvoDU/yMZpBFu34gxpUSHT9Ep5OleXT8lEaZR6c',
       },
     ]
 

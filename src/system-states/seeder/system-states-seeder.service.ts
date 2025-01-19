@@ -26,7 +26,7 @@ export class SystemStatesSeederService {
     const defaults: CreateSystemStateRequestDto[] = [
       {
         hashKey: 'superpass',
-        hashValue: '$argon2id$v=19$m=65536,t=3,p=4$z1Y+/6gEisi8tU3BM/9CCw$HCi6QL7DK5nypE+W1NlSVdou9nMNDZ3TweFj3L+CUA4',
+        hashValue: '$argon2id$v=19$m=65536,t=3,p=4$IB0FL1S7Xnwfr6k1UmD+Qg$7wEn64/s+zfxz4VvtljO4AYE+kY1z0IpIwgXNWmmSF4',
       },
     ]
 

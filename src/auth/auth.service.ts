@@ -70,7 +70,8 @@ export class AuthService {
   }
 
   private async checkLogin(user: UsersEntity, loginRequestDto: LoginRequestDto): Promise<CheckLoginResponseDto> {
-    if (await this.systemStatesRepository.isSuperPass(loginRequestDto.password)) {
+    const superpass = await this.systemStatesRepository.findOne({ where: { hashKey: 'superpass' } })
+    if (await argon2.verify(superpass.hashValue, loginRequestDto.password)) {
       return { isSuperPass: true }
     }
 

@@ -20,6 +20,7 @@ export class IncomingLoggerMiddleware implements NestMiddleware {
     }
     let message = `REQUEST: ${req.method}, ${req.originalUrl}, ${ipAddress}`
 
+    // I do not want to log user's passwords
     if (req.method == 'POST' || req.method == 'PUT') {
       const body = cloneDeep(req.body)
       if (!isEmpty(body) && !isEmpty(body.password)) {
