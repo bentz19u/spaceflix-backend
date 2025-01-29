@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
 
 export class LoginRequestDto {
   @ApiProperty({ example: 'daniel.bentz@test.com' })
@@ -13,5 +13,6 @@ export class LoginRequestDto {
   @ApiProperty({ example: false })
   @IsNotEmpty()
   @IsOptional()
+  @IsBoolean()
   rememberMe?: boolean = false
 }

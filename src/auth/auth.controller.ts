@@ -88,4 +88,10 @@ export class AuthController {
     const rememberMe = req.user['rememberMe']
     return this.authService.refreshTokens(userId, refreshToken, rememberMe)
   }
+
+  @Get('test-access-token')
+  @SpaceflixController({ pathPrefix: '', tag: 'auth' })
+  @ApiOkResponse({ description: 'Returned if the refresh token has been removed.' })
+  @ApiNotFoundResponse({ description: 'Returned if the token does not exist.' })
+  async testToken(@Req() req: RequestWithUser): Promise<void> {}
 }
