@@ -103,12 +103,11 @@ export class AuthService {
       }),
       this.jwtService.signAsync(payload, {
         secret: this.configService.get<string>('BACKEND_JWT_REFRESH_SECRET'),
-        expiresIn: payload.rememberMe ? '1s' : '1s',
+        expiresIn: payload.rememberMe ? '10s' : '10s',
       }),
     ])
 
     await this.updateTokens(user, refreshToken)
-
     return {
       accessToken,
       refreshToken,

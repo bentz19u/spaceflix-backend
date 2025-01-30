@@ -12,6 +12,10 @@ async function bootstrap() {
   // it's used to enable auto validation of the incoming data
   app.useGlobalPipes(new ValidationPipe())
 
+  app.enableCors({
+    origin: ['http://localhost:3001'],
+  })
+
   const config = new DocumentBuilder()
     .addBearerAuth(
       {
