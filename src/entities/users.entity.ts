@@ -13,7 +13,7 @@ export class UsersEntity {
   @Column({
     type: 'varchar',
     name: 'email',
-    length: 255,
+    length: 191,
     nullable: false,
   })
   email: string
