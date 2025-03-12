@@ -10,6 +10,7 @@ import { SeederRepository } from '@entities/repositories/seeder.repository'
 import { LoginAttemptsDummy } from '../dummies/login-attempts.dummy'
 import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
 import { LoginAttemptsRepository } from '@entities/repositories/login-attempts.repository'
+import { SystemStatesSeederService } from '../../src/system-states/seeder/system-states-seeder.service'
 
 export class E2eHelper {
   app: INestApplication
@@ -25,6 +26,17 @@ export class E2eHelper {
     // to avoid having insert or update from some tests messing up with the others
     const seederRepository = this.moduleFixture.get<SeederRepository>(SeederRepository)
     await seederRepository.clear()
+
+    await this.generateStaticData()
+  }
+
+  async generateStaticData() {
+    await Promise.all([this.generateSystemStates()])
+  }
+
+  async generateSystemStates() {
+    const systemStatesSeederService = this.moduleFixture.get<SystemStatesSeederService>(SystemStatesSeederService)
+    await systemStatesSeederService.seedDatabase()
   }
 
   getApp(): INestApplication {

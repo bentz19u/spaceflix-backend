@@ -11,7 +11,7 @@ export class SystemStatesSeederService {
 
   async seedDatabase(): Promise<any> {
     const count = await this.systemStatesRepository.count()
-    if (count > 0 || !['LOCAL'].includes(process.env.NODE_ENV)) {
+    if (count > 0 || !['LOCAL', 'TEST'].includes(process.env.NODE_ENV)) {
       return
     }
 
