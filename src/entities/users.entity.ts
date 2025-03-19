@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm'
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm'
 import { LoginAttemptsEntity } from '@entities/login-attempts.entity'
 import { UserCooldownsEntity } from '@entities/user-cooldowns.entity'
 import { UserTokensEntity } from '@entities/user-tokens.entity'
@@ -23,6 +23,9 @@ export class UsersEntity {
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })
   createdAt: string
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'datetime', nullable: true })
+  deleteAt: Date
 
   @OneToMany(() => UserCooldownsEntity, (userCooldown) => userCooldown.user)
   userCooldowns: UserCooldownsEntity[]
