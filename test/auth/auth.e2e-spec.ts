@@ -2,7 +2,7 @@ import { HttpStatus, INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { E2eHelper } from './common/e2e-helper'
 import { LoginRequestDto } from '@auth/dtos/login-request.dto'
-import { ErrorCodes } from '../src/common/constants/error-code.constant'
+import { ErrorCodes } from '../../src/common/constants/error-code.constant'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication

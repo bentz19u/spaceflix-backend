@@ -25,7 +25,7 @@ export class UsersEntity {
   createdAt: string
 
   @DeleteDateColumn({ name: 'deleted_at', type: 'datetime', nullable: true })
-  deleteAt: Date
+  deletedAt: Date
 
   @OneToMany(() => UserCooldownsEntity, (userCooldown) => userCooldown.user)
   userCooldowns: UserCooldownsEntity[]

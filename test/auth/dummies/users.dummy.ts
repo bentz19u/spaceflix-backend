@@ -1,8 +1,8 @@
 import { isEmpty } from 'lodash'
 import { UsersRepository } from '@entities/repositories/users.repository'
 import { UsersEntity } from '@entities/users.entity'
-import { CreateUserSeederRequestDto } from '../../src/users/dtos/create-user-seeder-request.dto'
-import { UsersSeederService } from '../../src/users/seeder/users-seeder.service'
+import { CreateUserSeederRequestDto } from '../../../src/users/dtos/create-user-seeder-request.dto'
+import { UsersSeederService } from '../../../src/users/seeder/users-seeder.service'
 
 export class UsersDummy {
   constructor(

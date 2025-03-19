@@ -17,7 +17,7 @@ export class UsersController {
 
     return {
       isAvailable: !user,
-      canActivate: !!(user && user.deleteAt),
+      canActivate: !!(user && user.deletedAt),
     }
   }
 }

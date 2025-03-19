@@ -3,14 +3,14 @@ import { TokensDummy } from '../dummies/tokens.dummy'
 import { AuthService } from '@auth/auth.service'
 import { UsersRepository } from '@entities/repositories/users.repository'
 import { TestingModule } from '@nestjs/testing'
-import { UsersSeederService } from '../../src/users/seeder/users-seeder.service'
+import { UsersSeederService } from '../../../src/users/seeder/users-seeder.service'
 import { UsersDummy } from '../dummies/users.dummy'
 import { INestApplication } from '@nestjs/common'
 import { SeederRepository } from '@entities/repositories/seeder.repository'
 import { LoginAttemptsDummy } from '../dummies/login-attempts.dummy'
 import { LoginAttemptsService } from '@auth/login-attempts/login-attempts.service'
 import { LoginAttemptsRepository } from '@entities/repositories/login-attempts.repository'
-import { SystemStatesSeederService } from '../../src/system-states/seeder/system-states-seeder.service'
+import { SystemStatesSeederService } from '../../../src/system-states/seeder/system-states-seeder.service'
 
 export class E2eHelper {
   app: INestApplication
