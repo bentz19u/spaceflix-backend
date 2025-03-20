@@ -24,8 +24,8 @@ export class E2eHelper {
   async init() {
     // we will clear all table between each e2e module test
     // to avoid having insert or update from some tests messing up with the others
-    const seederRepository = this.moduleFixture.get<SeederRepository>(SeederRepository)
-    await seederRepository.clear()
+    // const seederRepository = this.moduleFixture.get<SeederRepository>(SeederRepository)
+    // await seederRepository.clear()
 
     await this.generateStaticData()
   }

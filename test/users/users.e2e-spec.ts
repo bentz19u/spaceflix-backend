@@ -6,8 +6,8 @@ describe('AppController (e2e)', () => {
   let app: INestApplication
   let e2eHelper: E2eHelper
 
-  const USER_EMAIL = 'daniel.bentz@test.com'
-  const DELETED_USER = 'daniel.bentz+1@test.com'
+  const USER_EMAIL = 'daniel.bentz+3@test.com'
+  const DELETED_USER = 'daniel.bentz+4@test.com'
   const NEW_USER = 'daniel.bentz+new@test.com'
 
   beforeAll(async () => {
@@ -22,8 +22,10 @@ describe('AppController (e2e)', () => {
 
   describe('GET /users/is-registrable', () => {
     it(`200 - user already registered`, async () => {
+      const email = encodeURIComponent(USER_EMAIL)
+
       await request(app.getHttpServer())
-        .get(`/users/is-registrable?email=${USER_EMAIL}`)
+        .get(`/users/is-registrable?email=${email}`)
         .expect(HttpStatus.OK)
         .expect((res) => {
           expect(res.body.isAvailable).toBe(false)

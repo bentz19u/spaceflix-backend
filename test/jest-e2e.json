@@ -10,5 +10,6 @@
     "^@entities/(.*)$": "<rootDir>/../src/entities/$1",
     "^@auth/(.*)$": "<rootDir>/../src/auth/$1"
   },
+  "globalSetup": "<rootDir>/global-setup.ts",
   "setupFilesAfterEnv": ["<rootDir>/common/setup-e2e.ts"]
 }

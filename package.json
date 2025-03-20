@@ -17,12 +17,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand",
-    "test:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json --runInBand",
-    "test:auth:e2e": "NODE_ENV=TEST jest --config ./test/jest-e2e.json /test/auth/ --runInBand",
-    "test:auth:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json /test/auth/ --runInBand",
-    "test:users:e2e": "NODE_ENV=TEST jest --config ./test/jest-e2e.json /test/users/ --runInBand",
-    "test:users:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json /test/users/ --runInBand"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json",
+    "test:auth:e2e": "NODE_ENV=TEST jest --config ./test/jest-e2e.json /test/auth/",
+    "test:auth:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json /test/auth/",
+    "test:users:e2e": "NODE_ENV=TEST jest --config ./test/jest-e2e.json /test/users/",
+    "test:users:e2e:windows": "SET NODE_ENV=TEST&jest --config ./test/jest-e2e.json /test/users/"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.15",

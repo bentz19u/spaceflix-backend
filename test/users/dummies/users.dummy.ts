@@ -13,13 +13,13 @@ export class UsersDummy {
   async insertUsers(): Promise<UsersEntity> {
     const data: CreateUserSeederRequestDto[] = [
       {
-        id: 1, // registered user
-        email: 'daniel.bentz@test.com',
+        id: 3, // registered user
+        email: 'daniel.bentz+3@test.com',
         password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
       },
       {
-        id: 2, // deleted user
-        email: 'daniel.bentz+1@test.com',
+        id: 4, // deleted user
+        email: 'daniel.bentz+4@test.com',
         password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
         deletedAt: new Date('2023-03-15 10:21:00'),
       },
