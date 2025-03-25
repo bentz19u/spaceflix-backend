@@ -21,6 +21,12 @@ describe('AppController (e2e)', () => {
   })
 
   describe('GET /users/is-registrable', () => {
+    it(`400 - email not valid`, async () => {
+      const notEmail = 'daniel.bentz'
+
+      await request(app.getHttpServer()).get(`/users/is-registrable?email=${notEmail}`).expect(HttpStatus.BAD_REQUEST)
+    })
+
     it(`200 - user already registered`, async () => {
       const email = encodeURIComponent(USER_EMAIL)
 
