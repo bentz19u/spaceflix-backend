@@ -1,9 +1,11 @@
 import { UsersRepository } from '@entities/repositories/users.repository'
-import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
-import { Controller, Get, Query } from '@nestjs/common'
+import { ApiBadRequestResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common'
 import { Public } from '../common/decorators/public.decorator'
 import { GetIsRegistrableResponseDto } from './dtos/get-is-registrable-response.dto'
 import { GetIsRegistrableRequestDto } from './dtos/get-is-registrable-request.dto'
+import { GlobalErrorResponseDto } from '../logger/dtos/global-error-response.dto'
+import { PostStep1RequestDto } from './dtos/post-step1-request.dto'
 
 @ApiTags('users')
 @Controller('users')
@@ -12,6 +14,9 @@ export class UsersController {
 
   @Public()
   @Get('/is-registrable')
+  @ApiOperation({
+    summary: 'Check if the user is registered/was registered.',
+  })
   @ApiOkResponse({ type: GetIsRegistrableResponseDto })
   @ApiBadRequestResponse({ description: 'Returned if the email parameter validation failed.' })
   async isRegistrable(@Query() { email }: GetIsRegistrableRequestDto): Promise<GetIsRegistrableResponseDto> {
@@ -22,4 +27,14 @@ export class UsersController {
       canActivate: !!(user && user.deletedAt),
     }
   }
+
+  @Public()
+  @Post('/step1')
+  @ApiOperation({
+    summary: 'Verify that the email/pw are correct and email is not used.',
+  })
+  @ApiNoContentResponse({ description: 'Returned if the form is validated.' })
+  @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async Step1Verification(@Body() __: PostStep1RequestDto): Promise<void> {}
 }
