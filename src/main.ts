@@ -4,13 +4,19 @@ import { AppModule } from './app.module'
 import { ConfigService } from '@nestjs/config'
 import { UsersSeederService } from './users/seeder/users-seeder.service'
 import { SystemStatesSeederService } from './system-states/seeder/system-states-seeder.service'
-import { ValidationPipe } from '@nestjs/common'
+import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   // it's used to enable auto validation of the incoming data
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(
+    new I18nValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  )
+  app.useGlobalFilters(new I18nValidationExceptionFilter())
 
   app.enableCors({
     origin: ['http://localhost:3001'],

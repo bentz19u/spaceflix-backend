@@ -1,11 +1,19 @@
 import { UsersRepository } from '@entities/repositories/users.repository'
-import { ApiBadRequestResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common'
+import {
+  ApiBadRequestResponse,
+  ApiHeader,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, UseFilters } from '@nestjs/common'
 import { Public } from '../common/decorators/public.decorator'
 import { GetIsRegistrableResponseDto } from './dtos/get-is-registrable-response.dto'
 import { GetIsRegistrableRequestDto } from './dtos/get-is-registrable-request.dto'
 import { GlobalErrorResponseDto } from '../logger/dtos/global-error-response.dto'
 import { PostStep1RequestDto } from './dtos/post-step1-request.dto'
+import { I18nValidationExceptionFilter } from 'nestjs-i18n'
 
 @ApiTags('users')
 @Controller('users')
@@ -32,6 +40,13 @@ export class UsersController {
   @Post('/step1')
   @ApiOperation({
     summary: 'Verify that the email/pw are correct and email is not used.',
+  })
+  @ApiHeader({
+    name: 'x-custom-lang',
+    description: 'Language',
+    example: 'en',
+    required: false,
+    schema: { type: 'string', default: 'en' },
   })
   @ApiNoContentResponse({ description: 'Returned if the form is validated.' })
   @ApiBadRequestResponse({ type: GlobalErrorResponseDto })

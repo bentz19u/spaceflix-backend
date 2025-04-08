@@ -7,12 +7,15 @@ import {
   HttpException,
   NotFoundException,
   UnauthorizedException,
+  ValidationError,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
 import { LoggerWrapperExceptionFilterService } from '../logger-wrapper-exception-filter.service'
 import { ErrorCodes } from '../../common/constants/error-code.constant'
 import shortUUID from 'short-uuid'
 import { GlobalErrorResponseDto } from '../dtos/global-error-response.dto'
+import { I18nContext } from 'nestjs-i18n'
+import { I18nLibrary } from '../../common/tools/i18n.library'
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -54,6 +57,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
       // 400
       if (exception instanceof BadRequestException) {
+        const i18n = I18nContext.current(host)
+        const validationErrors: ValidationError[] = exception.getResponse()['message']
+
+        // In case we didn't specify a ValidationError type of error
+        if (typeof validationErrors != 'string') {
+          I18nLibrary(validationErrors, i18n)
+        }
+
         code = ErrorCodes.BAD_REQUEST_ERROR.code
         description = ErrorCodes.BAD_REQUEST_ERROR.description
       }

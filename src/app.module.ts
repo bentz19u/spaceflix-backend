@@ -15,6 +15,8 @@ import { APP_FILTER, APP_PIPE } from '@nestjs/core'
 import { AllExceptionFilter } from './logger/exception-filters/all-exception.filter'
 import { HttpExceptionFilter } from './logger/exception-filters/http-exception.filter'
 import { TypeOrmExceptionFilter } from './logger/exception-filters/typeorm-exception.filter'
+import { HeaderResolver, I18nModule } from 'nestjs-i18n'
+import path from 'node:path'
 
 @Module({
   imports: [
@@ -27,6 +29,14 @@ import { TypeOrmExceptionFilter } from './logger/exception-filters/typeorm-excep
       name: 'default',
       useClass: DefaultTypeOrmService,
       inject: [ConfigService],
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: path.join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [new HeaderResolver(['x-custom-lang'])],
     }),
     WinstonModule.forRootAsync(<WinstonModuleAsyncOptions>{
       // used by the logging system
