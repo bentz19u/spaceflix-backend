@@ -62,4 +62,5 @@ password: password
 - Login/logout/refresh system that uses an Access Token for authentication (which expires after a short period) and a Refresh Token to obtain a new Access Token without requiring the user to log in again.
 - Customized Logging system that tracks a unique UUID for each request, enabling easy searching and correlation of logs related to a specific request.
 - Testing using e2e tests for each endpoints
+- Registration with multi steps (ongoing)
 ```
