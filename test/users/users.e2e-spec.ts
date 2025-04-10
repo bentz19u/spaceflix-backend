@@ -1,6 +1,8 @@
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { E2eHelper } from './common/e2e-helper'
+import { PostStep1RequestDto } from '../../src/users/dtos/post-step1-request.dto'
+import { LoginRequestDto } from '@auth/dtos/login-request.dto'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -61,6 +63,52 @@ describe('AppController (e2e)', () => {
           expect(res.body.isAvailable).toBe(true)
           expect(res.body.canActivate).toBe(false)
         })
+    })
+  })
+
+  describe('POST /users/step1', () => {
+    it(`400 - email not valid`, async () => {
+      const requestDto: PostStep1RequestDto = {
+        email: 'daniel.bentz',
+        password: 'Password1234',
+      }
+
+      await request(app.getHttpServer())
+        .post(`/users/step1`)
+        .send(requestDto)
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect((res) => {
+          expect(res.body.error).toBeDefined()
+          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.description).toBeDefined()
+          expect(res.body.error.description[0].value).toBe('daniel.bentz')
+        })
+    })
+
+    it(`400 - password is not valid`, async () => {
+      const requestDto: PostStep1RequestDto = {
+        email: 'daniel.bentz@gmail.com',
+        password: '1234',
+      }
+
+      await request(app.getHttpServer())
+        .post(`/users/step1`)
+        .send(requestDto)
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect((res) => {
+          expect(res.body.error).toBeDefined()
+          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.description).toBeDefined()
+          expect(res.body.error.description[0].value).toBe('1234')
+        })
+    })
+
+    it(`204 - Email and Password valid`, async () => {
+      const requestDto: LoginRequestDto = {
+        email: 'daniel.bentz@gmail.com',
+        password: 'zr9hQBt2EcjT',
+      }
+      await request(app.getHttpServer()).post('/users/step1').send(requestDto).expect(HttpStatus.NO_CONTENT)
     })
   })
 })
