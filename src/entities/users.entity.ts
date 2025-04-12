@@ -3,6 +3,7 @@ import { LoginAttemptsEntity } from '@entities/login-attempts.entity'
 import { UserCooldownsEntity } from '@entities/user-cooldowns.entity'
 import { UserTokensEntity } from '@entities/user-tokens.entity'
 import { UserIpsEntity } from '@entities/user-ips.entity'
+import { UserPlanEnum } from '../common/enums/plan.enum'
 
 @Unique('email', ['email'])
 @Entity('users')
@@ -20,6 +21,9 @@ export class UsersEntity {
 
   @Column('varchar', { name: 'password', length: 255, nullable: false })
   password: string
+
+  @Column({ enum: ['standard_with_ads', 'standard', 'premium'], default: UserPlanEnum.STANDARD_ADS })
+  plan: UserPlanEnum
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })
   createdAt: string
