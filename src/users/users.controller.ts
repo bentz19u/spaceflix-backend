@@ -1,6 +1,7 @@
 import { UsersRepository } from '@entities/repositories/users.repository'
 import {
   ApiBadRequestResponse,
+  ApiCreatedResponse,
   ApiHeader,
   ApiNoContentResponse,
   ApiOkResponse,
@@ -14,6 +15,8 @@ import { GetIsRegistrableRequestDto } from './dtos/get-is-registrable-request.dt
 import { GlobalErrorResponseDto } from '../logger/dtos/global-error-response.dto'
 import { PostStep1RequestDto } from './dtos/post-step1-request.dto'
 import { I18nValidationExceptionFilter } from 'nestjs-i18n'
+import { IdDto } from '../common/dtos/id.dto'
+import { PostStep3RequestDto } from './dtos/post-step3-request.dto'
 
 @ApiTags('users')
 @Controller('users')
@@ -52,4 +55,20 @@ export class UsersController {
   @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
   @HttpCode(HttpStatus.NO_CONTENT)
   async Step1Verification(@Body() __: PostStep1RequestDto): Promise<void> {}
+
+  @Public()
+  @Post('/step3')
+  @ApiOperation({
+    summary: 'Verify that all needed information to create an user exist and create it.',
+  })
+  @ApiHeader({
+    name: 'x-custom-lang',
+    description: 'Language',
+    example: 'en',
+    required: false,
+    schema: { type: 'string', default: 'en' },
+  })
+  @ApiCreatedResponse({ type: IdDto })
+  @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
+  async Step3Verification(@Body() requestDto: PostStep3RequestDto): Promise<IdDto> {}
 }
