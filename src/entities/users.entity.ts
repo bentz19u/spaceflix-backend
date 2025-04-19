@@ -22,7 +22,7 @@ export class UsersEntity {
   @Column('varchar', { name: 'password', length: 255, nullable: false })
   password: string
 
-  @Column({ enum: ['standard_with_ads', 'standard', 'premium'], default: UserPlanEnum.STANDARD_ADS })
+  @Column({ type: 'enum', enum: ['standard_with_ads', 'standard', 'premium'], default: UserPlanEnum.STANDARD_ADS })
   plan: UserPlanEnum
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', nullable: false })

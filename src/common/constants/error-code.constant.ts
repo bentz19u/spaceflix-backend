@@ -94,4 +94,11 @@ export const ErrorCodes = {
       description: 'user must login using their email.',
     },
   },
+
+  REGISTRATION: {
+    USER_ALREADY_REGISTERED: {
+      code: 'user-registration-0001',
+      description: 'user is already registered.',
+    },
+  },
 }

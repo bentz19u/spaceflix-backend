@@ -8,15 +8,15 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Query, UseFilters } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common'
 import { Public } from '../common/decorators/public.decorator'
 import { GetIsRegistrableResponseDto } from './dtos/get-is-registrable-response.dto'
 import { GetIsRegistrableRequestDto } from './dtos/get-is-registrable-request.dto'
 import { GlobalErrorResponseDto } from '../logger/dtos/global-error-response.dto'
 import { PostStep1RequestDto } from './dtos/post-step1-request.dto'
-import { I18nValidationExceptionFilter } from 'nestjs-i18n'
 import { IdDto } from '../common/dtos/id.dto'
-import { PostStep3RequestDto } from './dtos/post-step3-request.dto'
+import { ErrorCodes } from '../common/constants/error-code.constant'
+import { CreateUserRequestDto } from './dtos/create-user-request.dto'
 
 @ApiTags('users')
 @Controller('users')
@@ -57,7 +57,7 @@ export class UsersController {
   async Step1Verification(@Body() __: PostStep1RequestDto): Promise<void> {}
 
   @Public()
-  @Post('/step3')
+  @Post('')
   @ApiOperation({
     summary: 'Verify that all needed information to create an user exist and create it.',
   })
@@ -70,5 +70,17 @@ export class UsersController {
   })
   @ApiCreatedResponse({ type: IdDto })
   @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
-  async Step3Verification(@Body() requestDto: PostStep3RequestDto): Promise<IdDto> {}
+  async CreateUser(@Body() requestDto: CreateUserRequestDto): Promise<IdDto> {
+    const user = await this.usersRepository.findOne({ where: { email: requestDto.email }, withDeleted: false })
+
+    if (user) {
+      throw new BadRequestException(ErrorCodes.REGISTRATION.USER_ALREADY_REGISTERED)
+    }
+
+    const id = await this.usersRepository.createAndEncryptedPassword(requestDto)
+
+    return {
+      id: id.toString(),
+    }
+  }
 }
