@@ -8,7 +8,18 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger'
-import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common'
 import { Public } from '../common/decorators/public.decorator'
 import { GetIsRegistrableResponseDto } from './dtos/get-is-registrable-response.dto'
 import { GetIsRegistrableRequestDto } from './dtos/get-is-registrable-request.dto'
@@ -17,6 +28,7 @@ import { PostStep1RequestDto } from './dtos/post-step1-request.dto'
 import { IdDto } from '../common/dtos/id.dto'
 import { ErrorCodes } from '../common/constants/error-code.constant'
 import { CreateUserRequestDto } from './dtos/create-user-request.dto'
+import { ReactivateUserRequestDto } from './dtos/reactivate-user-request.dto'
 
 @ApiTags('users')
 @Controller('users')
@@ -54,7 +66,7 @@ export class UsersController {
   @ApiNoContentResponse({ description: 'Returned if the form is validated.' })
   @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async Step1Verification(@Body() __: PostStep1RequestDto): Promise<void> {}
+  async step1Verification(@Body() __: PostStep1RequestDto): Promise<void> {}
 
   @Public()
   @Post('')
@@ -70,7 +82,7 @@ export class UsersController {
   })
   @ApiCreatedResponse({ type: IdDto })
   @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
-  async CreateUser(@Body() requestDto: CreateUserRequestDto): Promise<IdDto> {
+  async createUser(@Body() requestDto: CreateUserRequestDto): Promise<IdDto> {
     const user = await this.usersRepository.findOne({ where: { email: requestDto.email }, withDeleted: false })
 
     if (user) {
@@ -82,5 +94,27 @@ export class UsersController {
     return {
       id: id.toString(),
     }
+  }
+
+  @Public()
+  @Patch(':userId/reactivation')
+  @ApiOperation({
+    summary: 'Reactivate a deleted user.',
+  })
+  @ApiNoContentResponse()
+  @ApiBadRequestResponse({ type: GlobalErrorResponseDto })
+  async reactivateUser(@Param('userId') userId: any, @Body() requestDto: ReactivateUserRequestDto): Promise<void> {
+    const user = await this.usersRepository.findOne({ where: { id: userId }, withDeleted: true })
+
+    if (!user) {
+      throw new BadRequestException(ErrorCodes.NOT_FOUND_ERROR)
+    }
+    if (!user.deletedAt) {
+      throw new BadRequestException(ErrorCodes.REGISTRATION.USER_ALREADY_REGISTERED)
+    }
+
+    user.deletedAt = null
+    user.plan = requestDto.plan
+    await this.usersRepository.save(user)
   }
 }

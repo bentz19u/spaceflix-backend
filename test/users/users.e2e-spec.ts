@@ -2,7 +2,6 @@ import { HttpStatus, INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { E2eHelper } from './common/e2e-helper'
 import { PostStep1RequestDto } from '../../src/users/dtos/post-step1-request.dto'
-import { LoginRequestDto } from '@auth/dtos/login-request.dto'
 import { UserPlanEnum } from '../../src/common/enums/plan.enum'
 import { CreateUserRequestDto } from '../../src/users/dtos/create-user-request.dto'
 
