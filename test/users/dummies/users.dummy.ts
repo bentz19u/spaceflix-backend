@@ -23,6 +23,12 @@ export class UsersDummy {
         password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
         deletedAt: new Date('2023-03-15 10:21:00'),
       },
+      {
+        id: 5, // user to reactivate
+        email: 'daniel.bentz+5@test.com',
+        password: '$argon2id$v=19$m=65536,t=3,p=4$uSiaRcBKeWMqBraBWSBF7Q$Xuj6XMip9qqPz1qO1hIsPqi5oWqPDxspCXeVgX/UQ10',
+        deletedAt: new Date('2023-03-15 10:21:00'),
+      },
     ]
 
     let first = null

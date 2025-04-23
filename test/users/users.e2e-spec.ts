@@ -4,6 +4,8 @@ import { E2eHelper } from './common/e2e-helper'
 import { PostStep1RequestDto } from '../../src/users/dtos/post-step1-request.dto'
 import { UserPlanEnum } from '../../src/common/enums/plan.enum'
 import { CreateUserRequestDto } from '../../src/users/dtos/create-user-request.dto'
+import { ReactivateUserRequestDto } from '../../src/users/dtos/reactivate-user-request.dto'
+import { ErrorCodes } from '../../src/common/constants/error-code.constant'
 
 describe('AppController (e2e)', () => {
   let app: INestApplication
@@ -11,6 +13,7 @@ describe('AppController (e2e)', () => {
 
   const USER_EMAIL = 'daniel.bentz+3@test.com'
   const DELETED_USER = 'daniel.bentz+4@test.com'
+  const DELETED_USER_TO_REACTIVATE_ID = 5
   const NEW_USER = 'daniel.bentz+new@test.com'
 
   beforeAll(async () => {
@@ -80,7 +83,7 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST)
         .expect((res) => {
           expect(res.body.error).toBeDefined()
-          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.code).toBe(ErrorCodes.BAD_REQUEST_ERROR.code)
           expect(res.body.error.description).toBeDefined()
           expect(res.body.error.description[0].value).toBe('daniel.bentz')
         })
@@ -98,7 +101,7 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST)
         .expect((res) => {
           expect(res.body.error).toBeDefined()
-          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.code).toBe(ErrorCodes.BAD_REQUEST_ERROR.code)
           expect(res.body.error.description).toBeDefined()
           expect(res.body.error.description[0].value).toBe('1234')
         })
@@ -127,7 +130,7 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST)
         .expect((res) => {
           expect(res.body.error).toBeDefined()
-          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.code).toBe(ErrorCodes.BAD_REQUEST_ERROR.code)
           expect(res.body.error.description).toBeDefined()
           expect(res.body.error.description[0].value).toBe('daniel.bentz')
         })
@@ -146,7 +149,7 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST)
         .expect((res) => {
           expect(res.body.error).toBeDefined()
-          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.code).toBe(ErrorCodes.BAD_REQUEST_ERROR.code)
           expect(res.body.error.description).toBeDefined()
           expect(res.body.error.description[0].value).toBe('1234')
         })
@@ -165,7 +168,7 @@ describe('AppController (e2e)', () => {
         .expect(HttpStatus.BAD_REQUEST)
         .expect((res) => {
           expect(res.body.error).toBeDefined()
-          expect(res.body.error.code).toBe('client-0000')
+          expect(res.body.error.code).toBe(ErrorCodes.BAD_REQUEST_ERROR.code)
           expect(res.body.error.description).toBeDefined()
           expect(res.body.error.description[0].value).toBe('toto')
         })
@@ -178,6 +181,43 @@ describe('AppController (e2e)', () => {
         plan: UserPlanEnum.STANDARD,
       }
       await request(app.getHttpServer()).post('/users').send(requestDto).expect(HttpStatus.CREATED)
+    })
+  })
+
+  describe('PATCH /users/{userId}/reactivation', () => {
+    it(`400 - plan not valid`, async () => {
+      const requestDto = {
+        plan: 'toto',
+      }
+
+      await request(app.getHttpServer())
+        .patch(`/users/${DELETED_USER_TO_REACTIVATE_ID}/reactivation`)
+        .send(requestDto)
+        .expect(HttpStatus.BAD_REQUEST)
+    })
+
+    it(`204 - All good`, async () => {
+      const requestDto: ReactivateUserRequestDto = {
+        plan: UserPlanEnum.STANDARD,
+      }
+      await request(app.getHttpServer())
+        .patch(`/users/${DELETED_USER_TO_REACTIVATE_ID}/reactivation`)
+        .send(requestDto)
+        .expect(HttpStatus.OK)
+    })
+
+    it(`204 - already reactivated`, async () => {
+      const requestDto: ReactivateUserRequestDto = {
+        plan: UserPlanEnum.STANDARD,
+      }
+      await request(app.getHttpServer())
+        .patch(`/users/${DELETED_USER_TO_REACTIVATE_ID}/reactivation`)
+        .send(requestDto)
+        .expect(HttpStatus.BAD_REQUEST)
+        .expect((res) => {
+          expect(res.body.error).toBeDefined()
+          expect(res.body.error.code).toBe(ErrorCodes.REGISTRATION.USER_ALREADY_REGISTERED.code)
+        })
     })
   })
 })
